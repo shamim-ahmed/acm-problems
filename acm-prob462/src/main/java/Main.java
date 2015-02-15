@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 
 public class Main {
   private static final int NUMBER_OF_CARDS = 13;
-  private static final char[] SUIT_NAMES = { 'S', 'D', 'H', 'C' };
+  private static final char[] SUIT_NAMES = { 'S', 'H', 'D', 'C' };
 
   private static final Card[] CARDS_IN_HAND = new Card[NUMBER_OF_CARDS];
   private static final Map<Character, List<Card>> SUIT_CARD_MAP = new HashMap<>();
@@ -122,7 +122,7 @@ public class Main {
 
         if (cardsInSuite.size() <= 2) {
           // rule 3
-          value -= 2;
+          value -= 1;
         } else {
           // stop rule
           SUIT_STOPPED_MAP.put(s, Boolean.TRUE);
@@ -133,7 +133,7 @@ public class Main {
 
         if (cardsInSuite.size() <= 3) {
           // rule 4
-          value -= 3;
+          value -= 1;
         }
       }
     }
