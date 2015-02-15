@@ -4,7 +4,7 @@
 
   <groupId>edu.buet.cse</groupId>
   <artifactId>acm-prob162</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>acm-prob162</name>

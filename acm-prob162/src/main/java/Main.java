@@ -49,6 +49,11 @@ public class Main {
 
   private static void parseLine(String line, int i) {
     StringTokenizer tokenizer = new StringTokenizer(line, " ", false);
+    
+    if (tokenizer.countTokens() != COLUMN) {
+      throw new IllegalArgumentException(String.format("invalid input line : %s", line));
+    }
+    
     int j = 0;
 
     while (tokenizer.hasMoreTokens()) {
@@ -56,7 +61,7 @@ public class Main {
       char s = token.charAt(0);
       char r = token.charAt(1);
       Card card = DECK_OF_CARDS[i][j];
-      card.setSuite(s);
+      card.setSuit(s);
       card.setRank(r);
       j++;
     }
@@ -180,15 +185,15 @@ public class Main {
   }
 
   private static class Card {
-    private char suite;
+    private char suit;
     private char rank;
 
-    public char getSuite() {
-      return suite;
+    public char getSuit() {
+      return suit;
     }
 
-    public void setSuite(char suite) {
-      this.suite = suite;
+    public void setSuit(char suit) {
+      this.suit = suit;
     }
 
     public char getRank() {
@@ -205,7 +210,7 @@ public class Main {
 
     @Override
     public String toString() {
-      return String.format("%c%c", suite, rank);
+      return String.format("%c%c", suit, rank);
     }
   }
 }
