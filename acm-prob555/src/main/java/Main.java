@@ -13,16 +13,16 @@ public class Main {
   private static final String INPUT_TERMINATOR = "#";
   private static final Player[] PLAYER_ARRAY = Player.values();
 
-  private static final Card[] CARD_DECK = new Card[NUMBER_OF_CARDS];
-  private static final Map<Player, List<Card>> CARD_MAP = new HashMap<>();
+  private static final Card[] DECK_OF_CARDS = new Card[NUMBER_OF_CARDS];
+  private static final Map<Player, List<Card>> BRIDGE_HAND_MAP = new HashMap<>();
   
   static {
-    for (int i = 0; i < CARD_DECK.length; i++) {
-      CARD_DECK[i] = new Card();
+    for (int i = 0; i < DECK_OF_CARDS.length; i++) {
+      DECK_OF_CARDS[i] = new Card();
     }
     
     for (Player p : Player.values()) {  
-      CARD_MAP.put(p, new ArrayList<Card>());
+      BRIDGE_HAND_MAP.put(p, new ArrayList<Card>());
     }
   }
   
@@ -40,7 +40,7 @@ public class Main {
         break;
       }
       
-      clearHands();
+      clearBridgeHands();
       char c = line.charAt(0);
 
       String firstLine = scanner.nextLine();
@@ -51,27 +51,32 @@ public class Main {
       int i = 0;
       int cardIndex = 0;
       
-      while (i < 2 * NUMBER_OF_CARDS) {
+      while (i < 4) {
         playerIndex = (playerIndex + 1) % NUMBER_OF_PLAYERS;
         Player player = PLAYER_ARRAY[playerIndex];
-        List<Card> cardList = CARD_MAP.get(player);
+        List<Card> cardList = BRIDGE_HAND_MAP.get(player);
         
-        // determine the suit and rank for the current position
-        char s = combinedLine.charAt(i++);
-        char r = combinedLine.charAt(i++);
-        Suit suit = getSuitFromChar(s);
-        Rank rank = getRankFromChar(r);
+        // find all cards for this player
+        for (int j = 2 * i; j < 2 * NUMBER_OF_CARDS; j += 8) {
+          // find the suit and rank for the current position
+          char s = combinedLine.charAt(j);
+          char r = combinedLine.charAt(j + 1);
+          Suit suit = getSuitFromChar(s);
+          Rank rank = getRankFromChar(r);
+          
+          // deal the card to the player
+          Card card = DECK_OF_CARDS[cardIndex++];
+          card.setSuit(suit);
+          card.setRank(rank);
+          cardList.add(card);
+        }
         
-        // deal the card to a player
-        Card card = CARD_DECK[cardIndex++];
-        card.setSuit(suit);
-        card.setRank(rank);
-        cardList.add(card);
+        // do not forget this
+        i++;
       }
-      
      
       for (Player player : Player.values()) {
-        List<Card> cardList = CARD_MAP.get(player);
+        List<Card> cardList = BRIDGE_HAND_MAP.get(player);
         Collections.sort(cardList);
      
         StringBuilder resultBuilder = new StringBuilder();
@@ -87,8 +92,8 @@ public class Main {
     scanner.close();
   }
   
-  private static void clearHands() {
-    for (List<Card> cardList : CARD_MAP.values()) {
+  private static void clearBridgeHands() {
+    for (List<Card> cardList : BRIDGE_HAND_MAP.values()) {
       cardList.clear();
     }
   }
