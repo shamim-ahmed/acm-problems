@@ -233,15 +233,15 @@ public class Main {
   private enum Suit {
     CLUB("C"), DIAMOND("D"), SPADE("S"), HEART("H");
 
-    private String value;
+    private String str;
 
-    Suit(String value) {
-      this.value = value;
+    Suit(String str) {
+      this.str = str;
     }
     
     @Override
     public String toString() {
-      return value;
+      return str;
     }
   }
 
@@ -249,15 +249,15 @@ public class Main {
     TWO("2"), THREE("3"), FOUR("4"), FIVE("5"), SIX("6"), SEVEN("7"), EIGHT("8"), NINE("9"), TEN("T"), 
     JACK("J"), QUEEN("Q"), KING("K"), ACE("A");
 
-    private String value;
+    private String str;
 
-    Rank(String value) {
-      this.value = value;
+    Rank(String str) {
+      this.str = str;
     }
 
     @Override
     public String toString() {
-      return value;
+      return str;
     }
   }
 }

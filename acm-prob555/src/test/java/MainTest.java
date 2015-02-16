@@ -13,7 +13,7 @@ public class MainTest {
   private static final String CHAR_SET_NAME = "UTF-8";
   private static final int INITIAL_SIZE = 1024;
   
-  private static final int INPUT_SET = 1; 
+  private static final int INPUT_SET = 2; 
   private static final String INPUT_FILE_NAME = String.format("/input/input%d.txt", INPUT_SET);
   private static final String EXPECTED_RESULT_FILE_NAME = String.format("/result/result%d.txt", INPUT_SET);
   
