@@ -1,36 +1,54 @@
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
   private static final int NUMBER_OF_CARDS = 52;
   private static final int NUMBER_OF_PLAYERS = 4;
+  private static final int CARDS_PER_HAND = NUMBER_OF_CARDS / NUMBER_OF_PLAYERS;
   private static final String INPUT_TERMINATOR = "#";
-  private static final Player[] PLAYER_ARRAY = Player.values();
+  private static final String LINE_SEPARATOR = "\n";
+  private static final Map<Character, Integer> SUIT_VALUE_MAP = new HashMap<>();
+  private static final Map<Character, Integer> RANK_VALUE_MAP = new HashMap<>();
 
-  private static final Card[] DECK_OF_CARDS = new Card[NUMBER_OF_CARDS];
-  private static final Map<Player, List<Card>> BRIDGE_HAND_MAP = new HashMap<>();
-  
+  private static final Card[][] BRIDGE_HANDS = new Card[NUMBER_OF_PLAYERS][CARDS_PER_HAND];
+
   static {
-    for (int i = 0; i < DECK_OF_CARDS.length; i++) {
-      DECK_OF_CARDS[i] = new Card();
-    }
-    
-    for (Player p : Player.values()) {  
-      BRIDGE_HAND_MAP.put(p, new ArrayList<Card>());
+    SUIT_VALUE_MAP.put('C', 0);
+    SUIT_VALUE_MAP.put('D', 1);
+    SUIT_VALUE_MAP.put('S', 2);
+    SUIT_VALUE_MAP.put('H', 3);
+
+    RANK_VALUE_MAP.put('2', 2);
+    RANK_VALUE_MAP.put('3', 3);
+    RANK_VALUE_MAP.put('4', 4);
+    RANK_VALUE_MAP.put('5', 5);
+    RANK_VALUE_MAP.put('6', 6);
+    RANK_VALUE_MAP.put('7', 7);
+    RANK_VALUE_MAP.put('8', 8);
+    RANK_VALUE_MAP.put('9', 9);
+    RANK_VALUE_MAP.put('T', 10);
+    RANK_VALUE_MAP.put('J', 11);
+    RANK_VALUE_MAP.put('Q', 12);
+    RANK_VALUE_MAP.put('K', 13);
+    RANK_VALUE_MAP.put('A', 14);
+
+    for (int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      for (int j = 0; j < CARDS_PER_HAND; j++) {
+        BRIDGE_HANDS[i][j] = new Card();
+      }
     }
   }
-  
+
   public static void main(String... args) {
     processInput(System.in, System.out);
   }
 
   public static void processInput(InputStream inputStream, PrintStream outputStream) {
+    StringBuilder resultBuilder = new StringBuilder();
     Scanner scanner = new Scanner(inputStream);
 
     while (scanner.hasNextLine()) {
@@ -39,141 +57,54 @@ public class Main {
       if (line.equals(INPUT_TERMINATOR)) {
         break;
       }
-      
-      clearBridgeHands();
+
       char c = line.charAt(0);
 
       String firstLine = scanner.nextLine();
       String secondLine = scanner.nextLine();
       String combinedLine = firstLine + secondLine;
-      
+
       int playerIndex = getPlayerFromChar(c).ordinal();
-      int i = 0;
-      int cardIndex = 0;
-      
-      while (i < 4) {
+
+      for (int k = 0; k < 4; k++) {
         playerIndex = (playerIndex + 1) % NUMBER_OF_PLAYERS;
-        Player player = PLAYER_ARRAY[playerIndex];
-        List<Card> cardList = BRIDGE_HAND_MAP.get(player);
-        
-        // find all cards for this player
-        for (int j = 2 * i; j < 2 * NUMBER_OF_CARDS; j += 8) {
-          // find the suit and rank for the current position
-          char s = combinedLine.charAt(j);
-          char r = combinedLine.charAt(j + 1);
-          Suit suit = getSuitFromChar(s);
-          Rank rank = getRankFromChar(r);
-          
-          // deal the card to the player
-          Card card = DECK_OF_CARDS[cardIndex++];
-          card.setSuit(suit);
-          card.setRank(rank);
-          cardList.add(card);
+        Card[] currentHand = BRIDGE_HANDS[playerIndex];
+        int cardIndex = 0;
+
+        for (int i = 2 * k; i < 2 * NUMBER_OF_CARDS; i += 8) {
+          char s = combinedLine.charAt(i);
+          char r = combinedLine.charAt(i + 1);
+          Card card = currentHand[cardIndex++];
+          card.setSuit(s);
+          card.setRank(r);
         }
-        
-        // do not forget this
-        i++;
       }
-     
+
       for (Player player : Player.values()) {
-        List<Card> cardList = BRIDGE_HAND_MAP.get(player);
-        Collections.sort(cardList);
-     
-        StringBuilder resultBuilder = new StringBuilder();
-        
-        for (Card card : cardList) {
-          resultBuilder.append(card.toString()).append(" ");
+        Card[] handOfCards = BRIDGE_HANDS[player.ordinal()];
+        Arrays.sort(handOfCards);
+
+        resultBuilder.append(player.toString()).append(": ");
+
+        for (int i = 0; i < handOfCards.length; i++) {
+          resultBuilder.append(handOfCards[i].getSuit()).append(handOfCards[i].getRank());
+
+          if (i != handOfCards.length - 1) {
+            resultBuilder.append(' ');
+          }
         }
-        
-        outputStream.printf("%s: %s%n", player, resultBuilder.toString().trim());
+
+        resultBuilder.append(LINE_SEPARATOR);
       }
     }
-    
+
+    outputStream.print(resultBuilder.toString());
     scanner.close();
   }
-  
-  private static void clearBridgeHands() {
-    for (List<Card> cardList : BRIDGE_HAND_MAP.values()) {
-      cardList.clear();
-    }
-  }
-   
-  private static Suit getSuitFromChar(char s) {
-    Suit suit = null;
-    
-    switch (s) {
-      case 'C':
-        suit = Suit.CLUB;
-        break;
-      case 'D':
-        suit = Suit.DIAMOND;
-        break;
-      case 'S':
-        suit = Suit.SPADE;
-        break;
-      case 'H':
-        suit = Suit.HEART;
-        break;
-      default:
-        throw new IllegalArgumentException(String.format("Invalid suit : %c", s));
-    }
-    
-    return suit;
-  }
-  
-  private static Rank getRankFromChar(char r) {
-    Rank rank = null;
-    
-    switch (r) {
-      case '2':
-        rank = Rank.TWO;
-        break;
-      case '3':
-        rank = Rank.THREE;
-        break;
-      case '4':
-        rank = Rank.FOUR;
-        break;
-      case '5':
-        rank = Rank.FIVE;
-        break;
-      case '6':
-        rank = Rank.SIX;
-        break;
-      case '7':
-        rank = Rank.SEVEN;
-        break;
-      case '8':
-        rank = Rank.EIGHT;
-        break;
-      case '9':
-        rank = Rank.NINE;
-        break;
-      case 'T':
-        rank = Rank.TEN;
-        break;
-      case 'J':
-        rank = Rank.JACK;
-        break;
-      case 'Q':
-        rank = Rank.QUEEN;
-        break;
-      case 'K':
-        rank = Rank.KING;
-        break;
-      case 'A':
-        rank = Rank.ACE;
-        break;
-      default:
-        throw new IllegalArgumentException(String.format("Invalid rank : %c", r));
-    }
-    
-    return rank;
-  }
-  
+
   private static Player getPlayerFromChar(char p) {
     Player player = null;
-    
+
     switch (p) {
       case 'S':
         player = Player.S;
@@ -190,79 +121,43 @@ public class Main {
       default:
         throw new IllegalArgumentException(String.format("invalid player : %c", p));
     }
-    
+
     return player;
   }
- 
-  private static class Card implements Comparable<Card> {
-    private Suit suit;
-    private Rank rank;
 
-    public Suit getSuit() {
+  private static class Card implements Comparable<Card> {
+    private char suit;
+    private char rank;
+
+    public char getSuit() {
       return suit;
     }
 
-    public void setSuit(Suit suit) {
+    public void setSuit(char suit) {
       this.suit = suit;
     }
 
-    public Rank getRank() {
+    public char getRank() {
       return rank;
     }
 
-    public void setRank(Rank rank) {
+    public void setRank(char rank) {
       this.rank = rank;
     }
-    
+
     @Override
     public int compareTo(Card otherCard) {
-      int result = suit.ordinal() - otherCard.suit.ordinal();
-      
+      int result = SUIT_VALUE_MAP.get(suit) - SUIT_VALUE_MAP.get(otherCard.suit);
+
       if (result == 0) {
-        result = rank.ordinal() - otherCard.rank.ordinal();
+        result = RANK_VALUE_MAP.get(rank) - RANK_VALUE_MAP.get(otherCard.rank);
       }
-      
+
       return result;
     }
-
-    @Override
-    public String toString() {
-      return String.format("%s%s", suit, rank);
-    }
   }
-  
+
   private enum Player {
     S, W, N, E
-  }
-
-  private enum Suit {
-    CLUB("C"), DIAMOND("D"), SPADE("S"), HEART("H");
-
-    private String str;
-
-    Suit(String str) {
-      this.str = str;
-    }
-    
-    @Override
-    public String toString() {
-      return str;
-    }
-  }
-
-  private enum Rank {
-    TWO("2"), THREE("3"), FOUR("4"), FIVE("5"), SIX("6"), SEVEN("7"), EIGHT("8"), NINE("9"), TEN("T"), 
-    JACK("J"), QUEEN("Q"), KING("K"), ACE("A");
-
-    private String str;
-
-    Rank(String str) {
-      this.str = str;
-    }
-
-    @Override
-    public String toString() {
-      return str;
-    }
   }
 }
