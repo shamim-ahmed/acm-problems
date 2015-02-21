@@ -1,0 +1,53 @@
+2
+14
+ace of spades
+king of diamonds
+fool
+twenty-one of trumps
+five of diamonds
+four of clubs
+four of spades
+four of trumps
+fourteen of trumps
+jack of clubs
+jack of hearts
+jack of spades
+king of clubs
+king of hearts
+36
+ace of diamonds
+ace of hearts
+eight of clubs
+eight of diamonds
+eight of spades
+eight of trumps
+eleven of trumps
+five of clubs
+five of diamonds
+four of clubs
+four of spades
+four of trumps
+fourteen of trumps
+jack of clubs
+jack of hearts
+jack of spades
+king of clubs
+king of hearts
+knight of clubs
+knight of diamonds
+knight of hearts
+nine of diamonds
+nineteen of trumps
+six of clubs
+six of hearts
+six of trumps
+sixteen of trumps
+ten of clubs
+ten of diamonds
+three of clubs
+three of diamonds
+three of hearts
+three of spades
+three of trumps
+two of diamonds
+two of spades
