@@ -48,14 +48,6 @@ public class Main {
     scanner.close();
   }
   
-  private static void addCardToCurrentHand(String name, int index, Card[] currentCards) {
-    
-  }
-  
-  private static boolean isEmpty(String line) {
-    return line == null || line.trim().equals("");
-  }
-  
   private static String process(Card[] currentCards) {
     int oudlerCount = 0;
     int sumOfPoints = 0;
