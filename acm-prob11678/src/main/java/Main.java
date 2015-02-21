@@ -45,8 +45,7 @@ public class Main {
             // this must be always done
             bettyFlags[j] = false;
 
-            // now check if duplicate entries are there, and if yes, eliminate
-            // them
+            // now check if duplicate entries are there, and eliminate them
             int k = j + 1;
 
             while ((k < bettyValues.length - 1) && (bettyValues[k] == bettyValues[k + 1])) {
@@ -67,8 +66,7 @@ public class Main {
           // this must always be done
           aliceFlags[i] = false;
 
-          // now check if duplicate entries are there, and if yes, eliminate
-          // them
+          // now check if duplicate entries are there, and eliminate them
           int k = i + 1;
 
           while ((k < aliceValues.length - 1) && (aliceValues[k] == aliceValues[k + 1])) {
