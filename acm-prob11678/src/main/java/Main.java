@@ -42,10 +42,13 @@ public class Main {
 
         for (int j = 0; j < bettyValues.length; j++) {
           if (aliceValues[i] == bettyValues[j]) {
+            // this must be always done
             bettyFlags[j] = false;
+
+            // now check if duplicate entries are there, and if yes, eliminate
+            // them
             int k = j + 1;
 
-            // eliminate all entries with same value
             while ((k < bettyValues.length - 1) && (bettyValues[k] == bettyValues[k + 1])) {
               bettyFlags[k++] = false;
             }
@@ -53,7 +56,7 @@ public class Main {
             j = k - 1;
           } else {
             // match was not found
-            // eliminate entries with same value, but keep the first one
+            // eliminate entries with same value, except the first one
             while ((j < bettyValues.length - 1) && (bettyValues[j] == bettyValues[j + 1])) {
               bettyFlags[++j] = false;
             }
@@ -61,10 +64,13 @@ public class Main {
         }
 
         if (matchFound) {
+          // this must always be done
           aliceFlags[i] = false;
+
+          // now check if duplicate entries are there, and if yes, eliminate
+          // them
           int k = i + 1;
 
-          // eliminate all entries with same value
           while ((k < aliceValues.length - 1) && (aliceValues[k] == aliceValues[k + 1])) {
             aliceFlags[k++] = false;
           }
@@ -72,7 +78,7 @@ public class Main {
           i = k - 1;
         } else {
           // match was not found
-          // eliminate entries with same value, but keep the first one
+          // eliminate entries with same value, except the first one
           while ((i < aliceValues.length - 1) && (aliceValues[i] == aliceValues[i + 1])) {
             aliceFlags[++i] = false;
           }
