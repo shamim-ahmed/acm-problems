@@ -22,23 +22,17 @@ public class Main {
   public static void processInput(InputStream inputStream, PrintStream outputStream) {  
     StringBuilder resultBuilder = new StringBuilder();
     Scanner scanner = new Scanner(inputStream);
-    int n = scanner.nextInt();
+    int n = Integer.parseInt(scanner.nextLine());
     
     for (int i = 0; i < n; i++) {
-      int lineCount = scanner.nextInt();
+      int lineCount = Integer.parseInt(scanner.nextLine());   
       final Card[] cardsInHand = new Card[lineCount];
       
-      String line = scanner.nextLine();
-      
-      while (isEmpty(line)) {
-        line = scanner.nextLine();
-      }
-      
-      addCardToCurrentHand(line, 0, cardsInHand);
-      
-      for (int j = 1; j < lineCount; j++) {
-        line = scanner.nextLine();
-        addCardToCurrentHand(line, j, cardsInHand);
+      for (int j = 0; j < lineCount; j++) {
+        String name = scanner.nextLine();
+        Card card = DECK_OF_CARDS[j];
+        card.setName(name);
+        cardsInHand[j] = card;
       }
       
       resultBuilder.append(String.format("Hand #%d%n", i + 1));
@@ -55,9 +49,7 @@ public class Main {
   }
   
   private static void addCardToCurrentHand(String name, int index, Card[] currentCards) {
-    Card card = DECK_OF_CARDS[index];
-    card.setName(name);
-    currentCards[index] = card;
+    
   }
   
   private static boolean isEmpty(String line) {
@@ -151,9 +143,9 @@ public class Main {
         value = 45;
         oudler = true;
         return;
-      } 
+      }
       
-      StringTokenizer tokenizer = new StringTokenizer(name);
+      StringTokenizer tokenizer = new StringTokenizer(name, " ", false);
       String firstToken = tokenizer.nextToken();
       tokenizer.nextToken();
       String secondToken = tokenizer.nextToken();
