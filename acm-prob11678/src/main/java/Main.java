@@ -42,7 +42,7 @@ public class Main {
     scanner.close();
   }
 
-  private static int computeResult(int[] primaryArray, int m, int[] searchArray, int n) {
+  private static int computeResult(int[] primaryArray, final int m, int[] searchArray, final int n) {
     int result = m;
 
     for (int i = 0; i < m; i++) {
