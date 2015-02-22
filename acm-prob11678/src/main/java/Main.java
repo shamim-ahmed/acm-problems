@@ -23,70 +23,34 @@ public class Main {
       }
 
       int[] aliceValues = new int[m];
-      boolean[] aliceFlags = new boolean[m];
       int[] bettyValues = new int[n];
-      boolean[] bettyFlags = new boolean[n];
 
-      for (int k = 0; k < m; k++) {
-        aliceValues[k] = scanner.nextInt();
-        aliceFlags[k] = true;
-      }
+      final int aliceIndex = readValues(scanner, m, aliceValues);
+      final int bettyIndex = readValues(scanner, n, bettyValues);
 
-      for (int k = 0; k < n; k++) {
-        bettyValues[k] = scanner.nextInt();
-        bettyFlags[k] = true;
-      }
+      int aliceCount = aliceIndex;
+      int bettyCount = bettyIndex;
 
-      for (int i = 0; i < aliceValues.length; i++) {
-        boolean matchFound = false;
+      for (int i = 0; i < aliceIndex; i++) {
+        int a = aliceValues[i];
+        int j = 0;
 
-        for (int j = 0; j < bettyValues.length; j++) {
-          if (aliceValues[i] == bettyValues[j]) {
-            // this must be always done
-            bettyFlags[j] = false;
+        while (j < bettyIndex) {
+          int b = bettyValues[j];
 
-            // now check if duplicate entries are there, and eliminate them
-            int k = j + 1;
-
-            while ((k < bettyValues.length - 1) && (bettyValues[k] == bettyValues[k + 1])) {
-              bettyFlags[k++] = false;
-            }
-
-            j = k - 1;
-          } else {
-            // match was not found
-            // eliminate entries with same value, except the first one
-            while ((j < bettyValues.length - 1) && (bettyValues[j] == bettyValues[j + 1])) {
-              bettyFlags[++j] = false;
-            }
-          }
-        }
-
-        if (matchFound) {
-          // this must always be done
-          aliceFlags[i] = false;
-
-          // now check if duplicate entries are there, and eliminate them
-          int k = i + 1;
-
-          while ((k < aliceValues.length - 1) && (aliceValues[k] == aliceValues[k + 1])) {
-            aliceFlags[k++] = false;
+          if (a < b) {
+            break;
+          } else if (a == b) {
+            aliceCount--;
+            bettyCount--;
+            break;
           }
 
-          i = k - 1;
-        } else {
-          // match was not found
-          // eliminate entries with same value, except the first one
-          while ((i < aliceValues.length - 1) && (aliceValues[i] == aliceValues[i + 1])) {
-            aliceFlags[++i] = false;
-          }
+          j++;
         }
       }
 
-      int aliceCount = getCount(aliceFlags);
-      int bettyCount = getCount(bettyFlags);
-
-      int result = (aliceCount < bettyCount) ? aliceCount : bettyCount;
+      int result = aliceCount < bettyCount ? aliceCount : bettyCount;
       resultBuilder.append(result).append(LINE_SEPARATOR);
     }
 
@@ -94,15 +58,18 @@ public class Main {
     scanner.close();
   }
 
-  private static int getCount(boolean[] flags) {
-    int result = 0;
+  private static int readValues(Scanner scanner, int max, int[] values) {
+    int index = 0;
+    values[index++] = scanner.nextInt();
 
-    for (boolean f : flags) {
-      if (f) {
-        result++;
+    for (int k = 1; k < max; k++) {
+      int val = scanner.nextInt();
+
+      if (val > values[index - 1]) {
+        values[index++] = val;
       }
     }
 
-    return result;
+    return index;
   }
 }
