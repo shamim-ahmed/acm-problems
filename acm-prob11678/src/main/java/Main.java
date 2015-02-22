@@ -1,5 +1,6 @@
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -25,37 +26,37 @@ public class Main {
       int[] aliceValues = new int[m];
       int[] bettyValues = new int[n];
 
-      final int aliceIndex = readValues(scanner, m, aliceValues);
-      final int bettyIndex = readValues(scanner, n, bettyValues);
+      final int aliceCount = readValues(scanner, m, aliceValues);
+      final int bettyCount = readValues(scanner, n, bettyValues);
+      int result;
 
-      int aliceCount = aliceIndex;
-      int bettyCount = bettyIndex;
-
-      for (int i = 0; i < aliceIndex; i++) {
-        int a = aliceValues[i];
-        int j = 0;
-
-        while (j < bettyIndex) {
-          int b = bettyValues[j];
-
-          if (a < b) {
-            break;
-          } else if (a == b) {
-            aliceCount--;
-            bettyCount--;
-            break;
-          }
-
-          j++;
-        }
+      if (aliceCount < bettyCount) {
+        result = computeResult(aliceValues, aliceCount, bettyValues, bettyCount);
+      } else {
+        result = computeResult(bettyValues, bettyCount, aliceValues, aliceCount);
       }
-
-      int result = aliceCount < bettyCount ? aliceCount : bettyCount;
+      
       resultBuilder.append(result).append(LINE_SEPARATOR);
     }
 
     outputStream.print(resultBuilder.toString());
     scanner.close();
+  }
+
+  private static int computeResult(int[] primaryArray, int m, int[] searchArray, int n) {
+    int result = m;
+
+    for (int i = 0; i < m; i++) {
+      int val = primaryArray[i];
+
+      int targetIndex = Arrays.binarySearch(searchArray, 0, n, val);
+
+      if (targetIndex >= 0) {
+        result--;
+      }
+    }
+
+    return result;
   }
 
   private static int readValues(Scanner scanner, int max, int[] values) {
