@@ -12,9 +12,8 @@ public class Main {
 
   public static void processInput(InputStream inputStream, PrintStream outputStream) {
     StringBuilder resultBuilder = new StringBuilder();
-
     Scanner scanner = new Scanner(inputStream);
-
+    
     while (scanner.hasNext()) {
       final int m = scanner.nextInt();
       final int n = scanner.nextInt();
