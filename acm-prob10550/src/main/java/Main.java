@@ -3,7 +3,6 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-
 public class Main {
   public static void main(String... args) {
     processInput(System.in, System.out);
