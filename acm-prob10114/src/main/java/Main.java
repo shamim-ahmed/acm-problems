@@ -1,6 +1,7 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -20,10 +21,10 @@ public class Main {
         break;
       }
 
-      BigDecimal monthlyPayment = scanner.nextBigDecimal();
-      BigDecimal loanAmount = scanner.nextBigDecimal();
-      int numberOfRecords = scanner.nextInt();
-            
+      final BigDecimal downPayment = scanner.nextBigDecimal();
+      final BigDecimal loanAmount = scanner.nextBigDecimal();
+      final int numberOfRecords = scanner.nextInt();
+                  
       TreeMap<Integer, BigDecimal> depreciationMap = new TreeMap<>();
 
       for (int i = 0; i < numberOfRecords; i++) {
@@ -31,9 +32,10 @@ public class Main {
         BigDecimal depreciactionRate = scanner.nextBigDecimal();
         depreciationMap.put(month, depreciactionRate);
       }
-
+      
+      final BigDecimal monthlyPayment = loanAmount.divide(new BigDecimal(loanDuration), 6, RoundingMode.HALF_UP);
       BigDecimal amountToPay = loanAmount;
-      BigDecimal carPrice = loanAmount.add(monthlyPayment);
+      BigDecimal carPrice = loanAmount.add(downPayment);
       carPrice = carPrice.subtract(carPrice.multiply(depreciationMap.get(0)));
       int monthCount = 0;
 
@@ -41,7 +43,7 @@ public class Main {
         monthCount++;
         amountToPay = amountToPay.subtract(monthlyPayment);
         BigDecimal depreciationRate = depreciationMap.floorEntry(monthCount).getValue();
-        carPrice = carPrice.subtract(carPrice.multiply(depreciationRate));
+        carPrice = carPrice.subtract(carPrice.multiply(depreciationRate));        
       }
 
       if (monthCount == 1) {
