@@ -28,7 +28,6 @@ public class Main {
       resultBuilder.append(String.format("%d%n", position));
     }
     
-    
     scanner.close();
     outputStream.print(resultBuilder.toString());
   }
