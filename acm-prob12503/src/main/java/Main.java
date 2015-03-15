@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 public class Main {
   private static final Pattern PAST_INSTRUCTION_PATTERN = Pattern.compile("SAME AS (\\d+)");
+  
   public static void main(String... args) {
     processInput(System.in, System.out);
   }
