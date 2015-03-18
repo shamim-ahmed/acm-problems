@@ -32,7 +32,7 @@ public class Main {
       int diff = m - n;
       
       if (diff > 50) {
-        diff = (n - m + 100) % 100;
+        diff = n - m + 100;
       }
       
       resultBuilder.append(diff).append("\n");
