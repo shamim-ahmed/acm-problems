@@ -29,7 +29,7 @@ public class Main {
         x = y;
         y = scanner.nextInt();
 
-        if ((x < y && expectedOrder == SortOrder.DESCENDING) || (x > y && expectedOrder == SortOrder.ASCENDING)) {
+        if (result && (x < y && expectedOrder == SortOrder.DESCENDING) || (x > y && expectedOrder == SortOrder.ASCENDING)) {
           result = false;
         }
       }
