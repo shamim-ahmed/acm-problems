@@ -37,38 +37,15 @@ public class Main {
   private static int computeResult(int blockHeight, int[] heightValues) {
     int result = 0;
     
-    for (int i = blockHeight; i > 0; i--) {
-      int p = -1;
-
-      for (int j = 0; j < heightValues.length; j++) {
-        if (heightValues[j] >= i) {
-          p = j;
-          break;
-        }
+    int p = heightValues[0];
+    result += (blockHeight - heightValues[0]);
+    
+    for (int i = 1; i < heightValues.length; i++) {
+      if (heightValues[i] < p) {
+        result += (p - heightValues[i]);
       } 
       
-      if (p == -1) {
-        result += 1;
-      } else {
-        if (p > 0) {
-          result += 1;
-        }
-        
-        for (int j = p + 1; j < heightValues.length; j++) {
-          if (heightValues[j] >= i) {
-            int q = p;
-            p = j;
-            
-            if (p - q > 1) {
-              result += 1;
-            }
-          }
-        }
-        
-        if (heightValues.length - p > 1) {
-          result += 1;
-        }
-      }
+      p = heightValues[i];
     }
     
     return result;
