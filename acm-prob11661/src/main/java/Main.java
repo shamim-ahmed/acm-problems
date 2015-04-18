@@ -40,7 +40,7 @@ public class Main {
           lastDrugStorePos = i;
         }
 
-        if (lastRestaurantPos != INVALID_POSITION && lastDrugStorePos != INVALID_POSITION) {
+        if (c != '.' && lastRestaurantPos != INVALID_POSITION && lastDrugStorePos != INVALID_POSITION) {
           int d = Math.abs(lastRestaurantPos - lastDrugStorePos);
 
           if (d < minDistance) {
