@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.buet.cse</groupId>
-  <artifactId>acm-prob860</artifactId>
+  <artifactId>acm-prob11683</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <name>acm-prob12289</name>
+  <name>acm-prob12015</name>
   <url>http://maven.apache.org</url>
 
   <properties>

@@ -9,7 +9,6 @@
 
   <name>acm-prob12015</name>
   <url>http://maven.apache.org</url>
-  <description>This gets a Wrong Answer, but I do not know why</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
