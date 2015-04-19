@@ -1,0 +1,6 @@
+E -- is a regular palindrome.
+
+2S2 -- is a regular palindrome.
+
+SS22 -- is a mirrored string.
+
