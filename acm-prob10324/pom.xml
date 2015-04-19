@@ -9,6 +9,7 @@
 
   <name>acm-prob12015</name>
   <url>http://maven.apache.org</url>
+  <description>This solution gets TLE. I implemented the same algorithm in C++ and it works fine.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
