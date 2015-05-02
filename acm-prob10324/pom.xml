@@ -7,7 +7,7 @@
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <name>acm-prob12015</name>
+  <name>acm-prob10324</name>
   <url>http://maven.apache.org</url>
   <description>This solution gets TLE. I implemented the same algorithm in C++ and it works fine.</description>
 

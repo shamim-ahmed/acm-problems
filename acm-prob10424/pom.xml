@@ -6,8 +6,8 @@
   <artifactId>acm-prob10424</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-
-  <name>acm-prob12015</name>
+    
+  <name>acm-prob10424</name>
   <url>http://maven.apache.org</url>
 
   <properties>
