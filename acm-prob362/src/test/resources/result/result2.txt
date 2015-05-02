@@ -1,0 +1,26 @@
+Output for data set 1, 100 bytes:
+   Time remaining: 95 seconds
+   Time remaining: 43 seconds
+   Time remaining: 12 seconds
+   Time remaining: stalled
+   Time remaining: 70 seconds
+Total time: 27 seconds
+
+Output for data set 2, 6 bytes:
+Total time: 3 seconds
+
+Output for data set 3, 11 bytes:
+   Time remaining: stalled
+   Time remaining: stalled
+   Time remaining: stalled
+   Time remaining: 50 seconds
+   Time remaining: 45 seconds
+   Time remaining: 4 seconds
+Total time: 34 seconds
+
+Output for data set 4, 1 bytes:
+   Time remaining: stalled
+   Time remaining: stalled
+   Time remaining: 0 seconds
+Total time: 15 seconds
+
