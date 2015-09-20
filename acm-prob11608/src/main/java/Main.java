@@ -3,7 +3,6 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Main {
-  private static final int END_OF_INPUT_MARKER = -1;
   private static final int SIZE = 12;
   private static final String SUCCESS_OUTPUT = "No problem! :D";
   private static final String FAILURE_OUTPUT = "No problem. :(";
@@ -20,7 +19,7 @@ public class Main {
     while (scanner.hasNextInt()) {
       int n = scanner.nextInt();
       
-      if (n == END_OF_INPUT_MARKER) {
+      if (n < 0) {
         break;
       }
       
