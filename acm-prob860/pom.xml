@@ -7,7 +7,7 @@
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <name>acm-prob12289</name>
+  <name>acm-prob860</name>
   <url>http://maven.apache.org</url>
 
   <properties>
