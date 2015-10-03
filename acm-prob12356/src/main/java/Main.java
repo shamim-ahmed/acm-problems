@@ -1,6 +1,7 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class Main {
   public static void main(String... args) {
@@ -19,32 +20,25 @@ public class Main {
         break;
       }
 
-      boolean[] soldierFlags = new boolean[n + 1];
-
-      for (int k = 1; k < soldierFlags.length; k++) {
-        soldierFlags[k] = true;
+      TreeSet<Integer> soldierSet = new TreeSet<>();
+      
+      for (int i = 1; i <= n; i++) {
+        soldierSet.add(i);
       }
 
-      for (int k = 0; k < p; k++) {
-        int lower = scanner.nextInt();
-        int upper = scanner.nextInt();
+      for (int i = 0; i < p; i++) {
+        int a = scanner.nextInt();
+        int b = scanner.nextInt();
 
-        for (int r = lower; r <= upper; r++) {
-          soldierFlags[r] = false;
+        for (int j = a; j <= b; j++) {
+          soldierSet.remove(j);
         }
 
-        int i = lower - 1;
-        while (i >= 1 && !soldierFlags[i]) {
-          i--;
-        }
-
-        int j = upper + 1;
-        while (j < soldierFlags.length && !soldierFlags[j]) {
-          j++;
-        }
-
-        resultBuilder.append(i >= 1 ? i : "*").append(" ")
-            .append(j < soldierFlags.length ? j : "*").append("\n");
+        Integer left = soldierSet.lower(a);
+        Integer right = soldierSet.higher(b);
+        
+        resultBuilder.append(left != null ? left : "*").append(" ")
+            .append(right != null ? right : "*").append("\n");
       }
 
       resultBuilder.append("-").append("\n");
