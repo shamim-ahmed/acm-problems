@@ -1,9 +1,8 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-import java.util.TreeSet;
 
-public class Main {
+public class Main {  
   public static void main(String... args) {
     processInput(System.in, System.out);
   }
@@ -20,27 +19,30 @@ public class Main {
         break;
       }
 
-      TreeSet<Integer> soldierSet = new TreeSet<>();
-      
-      for (int i = 1; i <= n; i++) {
-        soldierSet.add(i);
-      }
+      int[] leftIndices = new int[n + 1];
+      int[] rightIndices = new int[n + 1];
 
-      for (int i = 0; i < p; i++) {
+      for (int i = 1; i < leftIndices.length; i++) {
+        leftIndices[i] = i - 1;
+        rightIndices[i] = i + 1;
+      }
+      
+      leftIndices[1] = 0;
+      rightIndices[rightIndices.length - 1] = 0;
+
+      for (int k = 0; k < p; k++) {
         int a = scanner.nextInt();
         int b = scanner.nextInt();
-
-        for (int j = a; j <= b; j++) {
-          soldierSet.remove(j);
-        }
-
-        Integer left = soldierSet.lower(a);
-        Integer right = soldierSet.higher(b);
         
-        resultBuilder.append(left != null ? left : "*").append(" ")
-            .append(right != null ? right : "*").append("\n");
+        int u = leftIndices[a];
+        int v = rightIndices[b];
+        
+        rightIndices[u] = v;
+        leftIndices[v] = u;
+        
+        resultBuilder.append(u != 0 ? u : "*").append(" ").append(v != 0 ? v : "*").append("\n");
       }
-
+      
       resultBuilder.append("-").append("\n");
     }
 
