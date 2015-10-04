@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Main {
   public static final int SIZE = 3;
-  public static final int MAX_GRID_COUNT = 512;
 
   public static void main(String... args) {
     processInput(System.in, System.out);
@@ -33,34 +32,30 @@ public class Main {
       }
 
       Grid grid = new Grid(values);
+      HashSet<Grid> gridSet = new HashSet<>();
+      gridSet.add(grid);
+      int count = 0;
 
-      if (grid.isAllZeroGrid()) {
-        resultBuilder.append(-1).append("\n");
-      } else {
-        HashSet<Grid> gridSet = new HashSet<>();
-        gridSet.add(grid);
+      while (true) {
+        Grid nextGrid = grid.computeNextGrid();
 
-        int count = 0;
-
-        while (count < MAX_GRID_COUNT) {
-          Grid nextGrid = grid.computeNextGrid();
-
-          if (nextGrid.isAllZeroGrid()) {
-            break;
-          }
-
-          if (gridSet.contains(nextGrid)) {
-            count = -1;
-            break;
-          }
-
-          count++;
-          gridSet.add(nextGrid);
-          grid = nextGrid;
+        // check if we have found a repeated grid
+        if (gridSet.contains(nextGrid)) {
+          count = -1;
+          break;
         }
 
-        resultBuilder.append(count).append("\n");
+        // we have found the grid consisting of all zeros
+        if (nextGrid.isAllZeroGrid()) {
+          break;
+        }
+
+        count++;
+        gridSet.add(nextGrid);
+        grid = nextGrid;
       }
+
+      resultBuilder.append(count).append("\n");
     }
 
     scanner.close();
@@ -164,21 +159,6 @@ public class Main {
       }
 
       return result;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder resultBuilder = new StringBuilder();
-
-      for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-          resultBuilder.append(values[i][j] ? 1 : 0);
-        }
-
-        resultBuilder.append("\n");
-      }
-
-      return resultBuilder.toString();
     }
   }
 }
