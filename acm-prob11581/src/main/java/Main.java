@@ -14,7 +14,7 @@ public class Main {
     Scanner scanner = new Scanner(inputStream);
     StringBuilder resultBuilder = new StringBuilder();
 
-    final int n = Integer.parseInt(scanner.nextLine());
+    final int n = Integer.parseInt(scanner.nextLine().trim());
 
     for (int k = 0; k < n; k++) {
       // remove the empty line from input

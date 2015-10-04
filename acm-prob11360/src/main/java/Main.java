@@ -18,24 +18,24 @@ public class Main {
     Scanner scanner = new Scanner(inputStream);
     StringBuilder resultBuilder = new StringBuilder();
 
-    final int numberOfCases = Integer.parseInt(scanner.nextLine());
+    final int numberOfCases = Integer.parseInt(scanner.nextLine().trim());
 
     for (int k = 0; k < numberOfCases; k++) {
-      int n = Integer.parseInt(scanner.nextLine());
+      int n = Integer.parseInt(scanner.nextLine().trim());
       int[][] values = new int[n][n];
 
       for (int i = 0; i < n; i++) {
-        String line = scanner.nextLine();
+        String line = scanner.nextLine().trim();
 
         for (int j = 0; j < n; j++) {
           values[i][j] = Integer.parseInt(String.valueOf(line.charAt(j)));
         }
       }
 
-      int numberOfCommands = Integer.parseInt(scanner.nextLine());
+      int numberOfCommands = Integer.parseInt(scanner.nextLine().trim());
 
       for (int i = 0; i < numberOfCommands; i++) {
-        String command = scanner.nextLine();
+        String command = scanner.nextLine().trim();
 
         if (command.matches(INC_COMMAND)) {
           increment(values);
