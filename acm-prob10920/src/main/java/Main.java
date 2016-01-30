@@ -33,39 +33,63 @@ public class Main {
       int j = startValue;
       int count = 1;
 
-      while (count < spiralPosition) {
+      while (count < spiralPosition && isValidIndex(i, dimension) && isValidIndex(j, dimension)) {
         if (currentDirection == Direction.UP) {
-          while (isValidIndex(i, dimension) && i >= topIndex) {
-            i--;
-            count++;
+          int delta = i - topIndex + 1;
+
+          if (delta > spiralPosition - count) {
+            delta = spiralPosition - count;
           }
 
-          topIndex = i;
-          currentDirection = Direction.LEFT;
+          count += delta;
+          i -= delta;
+
+          if (count < spiralPosition) {
+            topIndex = i;
+            currentDirection = Direction.LEFT;
+          }
         } else if (currentDirection == Direction.LEFT) {
-          while (isValidIndex(j, dimension) && j >= leftIndex) {
-            j--;
-            count++;
+          int delta = j - leftIndex + 1;
+
+          if (delta > spiralPosition - count) {
+            delta = spiralPosition - count;
           }
 
-          leftIndex = j;
-          currentDirection = Direction.DOWN;
+          count += delta;
+          j -= delta;
+
+          if (count < spiralPosition) {
+            leftIndex = j;
+            currentDirection = Direction.DOWN;
+          }
         } else if (currentDirection == Direction.DOWN) {
-          while (isValidIndex(i, dimension) && i <= bottomIndex) {
-            i++;
-            count++;
+          int delta = bottomIndex - i + 1;
+
+          if (delta > spiralPosition - count) {
+            delta = spiralPosition - count;
           }
 
-          bottomIndex = i;
-          currentDirection = Direction.RIGHT;
+          count += delta;
+          i += delta;
+          
+          if (count < spiralPosition) {
+            bottomIndex = i;
+            currentDirection = Direction.RIGHT;
+          }
         } else if (currentDirection == Direction.RIGHT) {
-          while (isValidIndex(j, dimension) && j <= rightIndex) {
-            j++;
-            count++;
+          int delta = rightIndex - j + 1;
+
+          if (delta > spiralPosition - count) {
+            delta = spiralPosition - count;
           }
 
-          rightIndex = j;
-          currentDirection = Direction.UP;
+          count += delta;
+          j += delta;
+
+          if (count < spiralPosition) {
+            rightIndex = j;
+            currentDirection = Direction.UP;
+          }
         }
       }
 
