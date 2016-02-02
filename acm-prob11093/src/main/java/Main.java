@@ -31,7 +31,7 @@ public class Main {
       // input has been read for current case. Now compute result
       int position = INVALID_POSITION;
       int sum = 0;
-      int partialDelta = 0;
+      int partialSum = 0;
 
       for (int j = 0; j < numberOfStations; j++) {
         int delta = petrolAvailable[j] - petrolNeeded[j];
@@ -39,13 +39,13 @@ public class Main {
 
         if (position == INVALID_POSITION && delta >= 0) {
           position = j;
-          partialDelta = delta;
+          partialSum = delta;
         } else if (position != INVALID_POSITION) {
-          partialDelta += delta;
+          partialSum += delta;
 
-          if (partialDelta < 0) {
+          if (partialSum < 0) {
             position = INVALID_POSITION;
-            partialDelta = 0;
+            partialSum = 0;
           }
         }
       }
