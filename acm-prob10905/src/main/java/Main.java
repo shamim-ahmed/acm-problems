@@ -1,11 +1,8 @@
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
   public static void main(String... args) {
@@ -15,6 +12,7 @@ public class Main {
   public static void processInput(InputStream inStream, PrintStream outStream) {
     Scanner scanner = new Scanner(inStream);
     StringBuilder resultBuilder = new StringBuilder();
+    final Comparator<String> comparator = new CustomStringComparator();
 
     while (scanner.hasNextLine()) {
       int n = Integer.parseInt(scanner.nextLine().trim());
@@ -30,30 +28,10 @@ public class Main {
         throw new RuntimeException(String.format("invalid input line : %s", line));
       }
 
-      TreeMap<Character, List<String>> bucketMap = new TreeMap<>(Collections.reverseOrder());
+      Arrays.sort(valueArray, comparator);
 
       for (String value : valueArray) {
-        char c = value.charAt(0);
-
-        List<String> bucket = bucketMap.get(c);
-
-        if (bucket == null) {
-          bucket = new ArrayList<>();
-          bucketMap.put(c, bucket);
-        }
-
-        bucket.add(value);
-      }
-
-      Comparator<String> comparator = new CustomStringComparator();
-
-      for (Character c : bucketMap.keySet()) {
-        List<String> bucket = bucketMap.get(c);
-        Collections.sort(bucket, comparator);
-
-        for (String s : bucket) {
-          resultBuilder.append(s);
-        }
+        resultBuilder.append(value);
       }
 
       resultBuilder.append("\n");
