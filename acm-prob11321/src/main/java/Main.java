@@ -52,14 +52,14 @@ public class Main {
 
     @Override
     public int compare(Integer value1, Integer value2) {
-      int reminder1 = computeReminder(value1);
-      int reminder2 = computeReminder(value2);
+      int remainder1 = computeReminder(value1);
+      int remainder2 = computeReminder(value2);
 
-      if (reminder1 < reminder2) {
+      if (remainder1 < remainder2) {
         return -1;
       }
 
-      if (reminder1 > reminder2) {
+      if (remainder1 > remainder2) {
         return 1;
       }
 
