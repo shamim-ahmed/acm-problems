@@ -62,26 +62,14 @@ public class Main {
    * returns true if a conflict has been found in the interval
    */
   private static boolean scanInterval(BitSet schedule, int start, int end) {
-    int delta = end - start;
 
-    // interval of length one needs to be handled carefully
-    if (delta == 1 && schedule.get(start) && schedule.get(end)) {
-      return true;
-    }
-
-    // allow overlapping at start
-    schedule.set(start);
-
-    for (int j = start + 1; j < end; j++) {
+    for (int j = start; j < end; j++) {
       if (schedule.get(j)) {
         return true;
       }
 
       schedule.set(j);
     }
-
-    // allow overlapping at end
-    schedule.set(end);
 
     return false;
   }
