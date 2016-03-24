@@ -44,6 +44,11 @@ public class Main {
 
         for (int p = start; p <= MAX && !conflictFound; p += repeatInterval) {
           int q = p + delta;
+          
+          if (q > MAX) {
+            q = MAX;
+          }
+          
           conflictFound = scanInterval(schedule, p, q);
         }
       }
@@ -62,7 +67,7 @@ public class Main {
    * returns true if a conflict has been found in the interval
    */
   private static boolean scanInterval(BitSet schedule, int start, int end) {
-
+    
     for (int j = start; j < end; j++) {
       if (schedule.get(j)) {
         return true;
