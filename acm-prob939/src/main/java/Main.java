@@ -62,6 +62,7 @@ public class Main {
         List<String> parentList = entry.getValue();
 
         if (parentList.size() < 2) {
+          // invalid input - ignore it
           iter.remove();
           continue;
         }
