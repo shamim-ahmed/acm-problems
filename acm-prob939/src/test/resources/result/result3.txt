@@ -1,0 +1,5 @@
+John dominant
+Marta non-existent
+Mary non-existent
+Peter non-existent
+Susan recessive
