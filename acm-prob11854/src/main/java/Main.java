@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+  private static final String RIGHT_STR = "right";
+  private static final String WRONG_STR = "wrong";
+  
   public static void main(String... args) {
     processInput(System.in, System.out);
   }
@@ -25,9 +28,9 @@ public class Main {
       Arrays.sort(values);
 
       if ((values[0] * values[0] + values[1] * values[1]) == values[2] * values[2]) {
-        resultBuilder.append("right").append("\n");
+        resultBuilder.append(RIGHT_STR).append("\n");
       } else {
-        resultBuilder.append("wrong").append("\n");
+        resultBuilder.append(WRONG_STR).append("\n");
       }
     }
 
