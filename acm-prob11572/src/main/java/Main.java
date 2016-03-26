@@ -57,8 +57,10 @@ public class Main {
       }
 
       // check if the last sequence was the longest one
-      if (maxLength < uniqueValues.size()) {
-        maxLength = uniqueValues.size();
+      int lastSequenceLength = uniqueValues.size();
+      
+      if (maxLength < lastSequenceLength) {
+        maxLength = lastSequenceLength;
       }
 
       resultBuilder.append(maxLength).append("\n");
