@@ -20,6 +20,7 @@ public class Main {
     int numberOfJobDescriptions = Integer.parseInt(valueArray[1]);
     Map<String, Integer> hayPointDictionary = new HashMap<>();
     
+    // read the words and their values and put them in dictionary
     for (int i = 0; i < numberOfWordsInDictionary; i++) {
       String line = scanner.nextLine().trim();
       String[] wordSpecs = line.split("\\s+");
@@ -30,6 +31,7 @@ public class Main {
     
     StringBuilder resultBuilder = new StringBuilder();
     
+    // now process job descriptions one by one
     for (int i = 0; i < numberOfJobDescriptions; i++) {
       int sum = 0;
       String line = scanner.nextLine().trim();
