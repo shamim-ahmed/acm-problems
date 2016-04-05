@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
   private static final String ESCAPE_MSG = "Escaped again! More 2D grid problems!";
-  private static final String CAPTURE_MSG = "Party time! Let’s find a restaurant!";
+  private static final String CAPTURE_MSG = "Party time! Let's find a restaurant!";
 
   public static void main(String... args) {
     processInput(System.in, System.out);
@@ -53,6 +53,11 @@ public class Main {
   }
 
   private static boolean isEscapePossible(int r, int c, boolean[] rowFlags, boolean[] columnFlags) {
+    // Note: if initial position is outside the grid, then we assume that Arif has escaped
+    if (r < 0 || r >= rowFlags.length || c < 0 || c >= columnFlags.length) {
+      return true;
+    }
+
     if (isFree(r, c, rowFlags, columnFlags)) {
       return true;
     }
