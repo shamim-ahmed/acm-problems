@@ -71,7 +71,7 @@ public class Main {
       return true;
     }
 
-    return job.getPriority() >= pQueue.peek();
+    return job.getPriority() == pQueue.peek();
   }
 
   private static class PrintJob {
