@@ -5,18 +5,8 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-  private enum Bank {
-    LEFT("left"), RIGHT("right");
-    private String name;
-
-    Bank(String name) {
-      this.name = name;
-    }
-
-    public String toString() {
-      return name;
-    }
-  };
+  private static final String LEFT_SIDE = "left";
+  private static final String RIGHT_SIDE = "right";
 
   public static void main(String... args) {
     processInput(System.in, System.out);
@@ -35,23 +25,15 @@ public class Main {
       int timeToCross = scanner.nextInt();
       int numberOfLines = scanner.nextInt();
 
-      for (int j = 0; j < numberOfLines; j++) {
-        int arrivalTime = scanner.nextInt();
-        String side = scanner.next();
+      populateQueues(leftQueue, rightQueue, scanner, numberOfLines);
 
-        if (Bank.LEFT.toString().equals(side)) {
-          leftQueue.offer(arrivalTime);
-        } else if (Bank.RIGHT.toString().equals(side)) {
-          rightQueue.offer(arrivalTime);
-        }
-      }
-
-      Ferry ferry = new Ferry(Bank.LEFT, 0, ferryCapacity);
+      String currentSide = LEFT_SIDE;
+      int currentTime = 0;
 
       while (!leftQueue.isEmpty() || !rightQueue.isEmpty()) {
         Queue<Integer> currentQueue, otherQueue;
 
-        if (ferry.getCurrentBank().equals(Bank.LEFT)) {
+        if (LEFT_SIDE.equals(currentSide)) {
           currentQueue = leftQueue;
           otherQueue = rightQueue;
         } else {
@@ -59,27 +41,29 @@ public class Main {
           otherQueue = leftQueue;
         }
 
-        boolean flag = ferry.shouldMove(currentQueue, otherQueue);
+        boolean shouldCross =
+            queueHasCar(currentQueue, currentTime) || queueHasCar(otherQueue, currentTime);
 
-        if (flag) {
-          ferry.move(currentQueue, timeToCross, resultBuilder);
+        if (shouldCross) {
+          int n = loadCars(currentQueue, currentTime, ferryCapacity);
+
+          // move to the other side
+          if (LEFT_SIDE.equals(currentSide)) {
+            currentSide = RIGHT_SIDE;
+          } else {
+            currentSide = LEFT_SIDE;
+          }
+
+          currentTime += timeToCross;
+
+          for (int j = 0; j < n; j++) {
+            resultBuilder.append(currentTime).append("\n");
+          }
         } else {
-          int value1 = Integer.MAX_VALUE;
-          int value2 = Integer.MAX_VALUE;
-
-          if (!currentQueue.isEmpty()) {
-            value1 = currentQueue.peek();
-          }
-
-          if (!otherQueue.isEmpty()) {
-            value2 = otherQueue.peek();
-          }
-
-          int minValue = value1 < value2 ? value1 : value2;
-          ferry.setCurrentTime(minValue);
+          currentTime = findMinimum(currentQueue, otherQueue);
         }
       }
-      
+
       if (i < numberOfCases - 1) {
         resultBuilder.append("\n");
       }
@@ -89,102 +73,70 @@ public class Main {
     outStream.print(resultBuilder.toString());
   }
 
-  private static class Ferry {
-    private Bank currentBank;
-    private int currentTime;
-    private int capacity;
+  private static void populateQueues(Queue<Integer> leftQueue, Queue<Integer> rightQueue,
+      Scanner scanner, int numberOfLines) {
+    for (int j = 0; j < numberOfLines; j++) {
+      int arrivalTime = scanner.nextInt();
+      String side = scanner.next();
 
-    public Ferry(Bank currentBank, int currentTime, int capacity) {
-      this.currentBank = currentBank;
-      this.currentTime = currentTime;
-      this.capacity = capacity;
+      if (LEFT_SIDE.equals(side)) {
+        leftQueue.offer(arrivalTime);
+      } else if (RIGHT_SIDE.equals(side)) {
+        rightQueue.offer(arrivalTime);
+      }
+    }
+  }
+
+  private static int findMinimum(Queue<Integer> firstQueue, Queue<Integer> secondQueue) {
+    int x = Integer.MAX_VALUE;
+    int y = Integer.MAX_VALUE;
+
+    if (!firstQueue.isEmpty()) {
+      x = firstQueue.peek();
     }
 
-    public Bank getCurrentBank() {
-      return currentBank;
+    if (!secondQueue.isEmpty()) {
+      y = secondQueue.peek();
     }
 
-    public void setCurrentBank(Bank currentBank) {
-      this.currentBank = currentBank;
+    return x < y ? x : y;
+
+  }
+
+  private static boolean queueHasCar(Queue<Integer> queue, int currentTime) {
+    boolean result = false;
+
+    if (!queue.isEmpty()) {
+      int value = queue.peek();
+
+      if (value <= currentTime) {
+        result = true;
+      }
     }
 
-    public int getCurrentTime() {
-      return currentTime;
+    return result;
+
+  }
+
+  private static int loadCars(Queue<Integer> currentQueue, int currentTime, int capacity) {
+
+    if (currentQueue.isEmpty()) {
+      return 0;
     }
 
-    public void setCurrentTime(int currentTime) {
-      this.currentTime = currentTime;
-    }
+    int count = 0;
 
-    public int getCapacity() {
-      return capacity;
-    }
+    while (!currentQueue.isEmpty() && count < capacity) {
+      Integer val = currentQueue.peek();
 
-    public void setCapacity(int capacity) {
-      this.capacity = capacity;
-    }
-
-    public boolean shouldMove(Queue<Integer> currentQueue, Queue<Integer> otherQueue) {
-      if (currentQueue.isEmpty() && otherQueue.isEmpty()) {
-        return false;
+      if (val > currentTime) {
+        break;
       }
 
-      return queueHasCar(currentQueue) || queueHasCar(otherQueue);
+      currentQueue.poll();
+      count++;
     }
 
-    private boolean queueHasCar(Queue<Integer> queue) {
-      boolean result = false;
-
-      if (!queue.isEmpty()) {
-        int value = queue.peek();
-
-        if (value <= currentTime) {
-          result = true;
-        }
-      }
-
-      return result;
-
-    }
-
-    private int loadCars(Queue<Integer> currentQueue) {
-
-      if (currentQueue.isEmpty()) {
-        return 0;
-      }
-
-      int count = 0;
-
-      while (!currentQueue.isEmpty() && count < capacity) {
-        Integer val = currentQueue.peek();
-
-        if (val > currentTime) {
-          break;
-        }
-
-        currentQueue.poll();
-        count++;
-      }
-
-      return count;
-    }
-
-    public void move(Queue<Integer> currentQueue, int timeToCross, StringBuilder resultBuilder) {
-      int n = loadCars(currentQueue);
-
-      // move to the other side
-      if (Bank.LEFT.equals(currentBank)) {
-        currentBank = Bank.RIGHT;
-      } else {
-        currentBank = Bank.LEFT;
-      }
-
-      currentTime += timeToCross;
-
-      for (int i = 0; i < n; i++) {
-        resultBuilder.append(currentTime).append("\n");
-      }
-
-    }
+    return count;
   }
 }
