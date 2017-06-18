@@ -1,6 +1,7 @@
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -17,13 +18,15 @@ public class Main {
     StringBuilder resultBuilder = new StringBuilder();
 
     int numberOfCases = scanner.nextInt();
-    Queue<Integer> leftQueue = new LinkedList<>();
-    Queue<Integer> rightQueue = new LinkedList<>();
 
     for (int i = 0; i < numberOfCases; i++) {
       int ferryCapacity = scanner.nextInt();
       int timeToCross = scanner.nextInt();
       int numberOfLines = scanner.nextInt();
+      
+      Queue<ArrivalEvent> leftQueue = new LinkedList<>();
+      Queue<ArrivalEvent> rightQueue = new LinkedList<>();
+      PriorityQueue<Duration> durationQueue = new PriorityQueue<>();
 
       populateQueues(leftQueue, rightQueue, scanner, numberOfLines);
 
@@ -31,7 +34,7 @@ public class Main {
       int currentTime = 0;
 
       while (!leftQueue.isEmpty() || !rightQueue.isEmpty()) {
-        Queue<Integer> currentQueue, otherQueue;
+        Queue<ArrivalEvent> currentQueue, otherQueue;
 
         if (LEFT_SIDE.equals(currentSide)) {
           currentQueue = leftQueue;
@@ -45,7 +48,7 @@ public class Main {
             queueHasCar(currentQueue, currentTime) || queueHasCar(otherQueue, currentTime);
 
         if (shouldCross) {
-          int n = loadCars(currentQueue, currentTime, ferryCapacity);
+           loadCars(currentQueue, durationQueue, ferryCapacity, currentTime, timeToCross);
 
           // move to the other side
           if (LEFT_SIDE.equals(currentSide)) {
@@ -55,13 +58,14 @@ public class Main {
           }
 
           currentTime += timeToCross;
-
-          for (int j = 0; j < n; j++) {
-            resultBuilder.append(currentTime).append("\n");
-          }
         } else {
           currentTime = findMinimum(currentQueue, otherQueue);
         }
+      }
+      
+      while (!durationQueue.isEmpty()) {
+        Duration duration = durationQueue.poll();
+        resultBuilder.append(duration.getEnd()).append("\n");      
       }
 
       if (i < numberOfCases - 1) {
@@ -73,41 +77,42 @@ public class Main {
     outStream.print(resultBuilder.toString());
   }
 
-  private static void populateQueues(Queue<Integer> leftQueue, Queue<Integer> rightQueue,
+  private static void populateQueues(Queue<ArrivalEvent> leftQueue, Queue<ArrivalEvent> rightQueue,
       Scanner scanner, int numberOfLines) {
     for (int j = 0; j < numberOfLines; j++) {
       int arrivalTime = scanner.nextInt();
       String side = scanner.next();
+      ArrivalEvent event = new ArrivalEvent(arrivalTime, j);
 
       if (LEFT_SIDE.equals(side)) {
-        leftQueue.offer(arrivalTime);
+        leftQueue.offer(event);
       } else if (RIGHT_SIDE.equals(side)) {
-        rightQueue.offer(arrivalTime);
+        rightQueue.offer(event);
       }
     }
   }
 
-  private static int findMinimum(Queue<Integer> firstQueue, Queue<Integer> secondQueue) {
+  private static int findMinimum(Queue<ArrivalEvent> firstQueue, Queue<ArrivalEvent> secondQueue) {
     int x = Integer.MAX_VALUE;
     int y = Integer.MAX_VALUE;
 
     if (!firstQueue.isEmpty()) {
-      x = firstQueue.peek();
+      x = firstQueue.peek().getTime();
     }
 
     if (!secondQueue.isEmpty()) {
-      y = secondQueue.peek();
+      y = secondQueue.peek().getTime();
     }
 
     return x < y ? x : y;
 
   }
 
-  private static boolean queueHasCar(Queue<Integer> queue, int currentTime) {
+  private static boolean queueHasCar(Queue<ArrivalEvent> queue, int currentTime) {
     boolean result = false;
 
     if (!queue.isEmpty()) {
-      int value = queue.peek();
+      int value = queue.peek().getTime();
 
       if (value <= currentTime) {
         result = true;
@@ -118,25 +123,94 @@ public class Main {
 
   }
 
-  private static int loadCars(Queue<Integer> currentQueue, int currentTime, int capacity) {
-
+  private static void loadCars(Queue<ArrivalEvent> currentQueue, PriorityQueue<Duration> durationQueue, int capacity, int currentTime, int timeToCross) {
     if (currentQueue.isEmpty()) {
-      return 0;
+      return;
     }
 
     int count = 0;
+    int endTime = currentTime + timeToCross;
 
     while (!currentQueue.isEmpty() && count < capacity) {
-      Integer val = currentQueue.peek();
+      Integer val = currentQueue.peek().getTime();
 
       if (val > currentTime) {
         break;
       }
 
-      currentQueue.poll();
+      ArrivalEvent event = currentQueue.poll();
+      int startTime = event.getTime();
+      int order = event.getOrder();
+      Duration duration = new Duration(startTime, endTime, order);
+      durationQueue.offer(duration);
       count++;
     }
+  }
+  
+  private static class ArrivalEvent {
+    private final int time;    
+    private final int order;
+    
+    public ArrivalEvent(int time, int order) {
+      this.time = time;
+      this.order = order;
+    }
+    
+    public int getTime() {
+      return time;
+    }
 
-    return count;
+    public int getOrder() {
+      return order;
+    }
+  }
+  
+  private static class Duration implements Comparable<Duration> {
+    private final int start;    
+    private final int end;
+    private final int order;
+    
+    public Duration(int start, int end, int order) {
+      this.start = start;
+      this.end = end;
+      this.order = order;
+    }
+    
+    public int getStart() {
+      return start;
+    }
+
+    public int getEnd() {
+      return end;
+    }
+    
+    public int getOrder() {
+      return order;
+    }
+
+    @Override
+    public int compareTo(Duration otherDuration) {
+      int otherStart = otherDuration.getStart();
+      
+      if (start < otherStart) {
+        return -1;
+      }
+      
+      if (start > otherStart) {
+        return 1;
+      }
+      
+      int otherOrder = otherDuration.getOrder();
+      
+      if (order < otherOrder) {
+        return -1;
+      }
+      
+      if (order > otherOrder) {
+        return 1;
+      }
+      
+      return 0;
+    }    
   }
 }
