@@ -88,19 +88,19 @@ public class Main {
 
     switch (comparisonOperator) {
       case LESS_THAN_OP:
-        result = comparisonOutput < 0;
+        result = (comparisonOutput < 0);
         break;
       case LESS_THAN_OR_EQUAL_OP:
-        result = comparisonOutput <= 0;
+        result = (comparisonOutput <= 0);
         break;
       case EQUAL_OP:
-        result = comparisonOutput == 0;
+        result = (comparisonOutput == 0);
         break;
       case GREATER_THAN_OP:
-        result = comparisonOutput > 0;
+        result = (comparisonOutput > 0);
         break;
       case GREATER_THAN_OR_EQUAL_OP:
-        result = comparisonOutput >= 0;
+        result = (comparisonOutput >= 0);
         break;
       default:
         break;
