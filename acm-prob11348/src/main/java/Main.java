@@ -48,6 +48,7 @@ public class Main {
         }
       }
 
+      // accumulate the formatted result
       generateFormattedResult(i, numberOfFriends, count, personToStampMap, resultBuilder);
     }
 
@@ -66,6 +67,9 @@ public class Main {
     valueSet.add(value);
   }
 
+  // This method computes the percentage results.
+  // We know the unique stamps owned by each person from the input map.
+  // We also know the total number of unique stamps (given by totalCount parameter)
   private static void generateFormattedResult(int inputSetNo, int numberOfFriends, int totalCount,
       Map<Integer, Set<Integer>> personToStampMap, StringBuilder resultBuilder) {
 
