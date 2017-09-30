@@ -10,6 +10,7 @@ import java.util.TreeMap;
 public class Main {
   private static final String CASE_FORMAT_STR = "Case %d: ";
   private static final String NUMBER_FORMAT_STR = "%.6f";
+  private static final String PERCENT_SIGN = "%";
 
   public static void main(String... args) {
     processInput(System.in, System.out);
@@ -76,7 +77,7 @@ public class Main {
         val = (100.0 * stampList.size()) / totalCount;
       }
 
-      resultBuilder.append(String.format(NUMBER_FORMAT_STR, val));
+      resultBuilder.append(String.format(NUMBER_FORMAT_STR, val)).append(PERCENT_SIGN);
 
       if (i < numberOfFriends) {
         resultBuilder.append(" ");
