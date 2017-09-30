@@ -1,10 +1,10 @@
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Main {
@@ -23,7 +23,7 @@ public class Main {
 
     for (int i = 1; i <= numberOfCases; i++) {
       int numberOfFriends = scanner.nextInt();
-      Map<Integer, List<Integer>> stampToPersonMap = new HashMap<>();
+      Map<Integer, Set<Integer>> stampToPersonMap = new HashMap<>();
 
       // find the owner(s) for each kind of stamp
       for (int j = 1; j <= numberOfFriends; j++) {
@@ -36,12 +36,14 @@ public class Main {
       }
 
       // now consider only those stamps for which there is only one owner
-      Map<Integer, List<Integer>> personToStampMap = new TreeMap<>();
+      Map<Integer, Set<Integer>> personToStampMap = new TreeMap<>();
       int count = 0;
 
-      for (Map.Entry<Integer, List<Integer>> entry : stampToPersonMap.entrySet()) {
+      for (Map.Entry<Integer, Set<Integer>> entry : stampToPersonMap.entrySet()) {
         if (entry.getValue().size() == 1) {
-          putInMap(personToStampMap, entry.getValue().get(0), entry.getKey());
+          Integer[] stampArray = new Integer[1];
+          stampArray = entry.getValue().toArray(stampArray);
+          putInMap(personToStampMap, stampArray[0], entry.getKey());
           count++;
         }
       }
@@ -53,28 +55,28 @@ public class Main {
     outStream.print(resultBuilder.toString());
   }
 
-  private static void putInMap(Map<Integer, List<Integer>> map, Integer key, Integer value) {
-    List<Integer> valueList = map.get(key);
+  private static void putInMap(Map<Integer, Set<Integer>> map, Integer key, Integer value) {
+    Set<Integer> valueSet = map.get(key);
 
-    if (valueList == null) {
-      valueList = new ArrayList<>();
-      map.put(key, valueList);
+    if (valueSet == null) {
+      valueSet = new HashSet<>();
+      map.put(key, valueSet);
     }
 
-    valueList.add(value);
+    valueSet.add(value);
   }
 
   private static void generateFormattedResult(int inputSetNo, int numberOfFriends, int totalCount,
-      Map<Integer, List<Integer>> personToStampMap, StringBuilder resultBuilder) {
+      Map<Integer, Set<Integer>> personToStampMap, StringBuilder resultBuilder) {
 
     resultBuilder.append(String.format(CASE_FORMAT_STR, inputSetNo));
 
     for (int i = 1; i <= numberOfFriends; i++) {
-      List<Integer> stampList = personToStampMap.get(i);
+      Set<Integer> stampSet = personToStampMap.get(i);
       double val = 0.0;
 
-      if (stampList != null) {
-        val = (100.0 * stampList.size()) / totalCount;
+      if (stampSet != null) {
+        val = (100.0 * stampSet.size()) / totalCount;
       }
 
       resultBuilder.append(String.format(NUMBER_FORMAT_STR, val)).append(PERCENT_SIGN);
