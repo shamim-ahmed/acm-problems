@@ -30,10 +30,10 @@ public class Main {
 
         for (int k = 1; k <= numberOfStamps; k++) {
           int stampType = scanner.nextInt();
-          putInMap(stampToPersonMap, stampType, k);
+          putInMap(stampToPersonMap, stampType, j);
         }
       }
-      
+
       // now consider only those stamps for which there is only one owner
       Map<Integer, List<Integer>> personToStampMap = new TreeMap<>();
       int count = 0;
@@ -59,7 +59,7 @@ public class Main {
       valueList = new ArrayList<>();
       map.put(key, valueList);
     }
-    
+
     valueList.add(value);
   }
 
